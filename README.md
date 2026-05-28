@@ -128,6 +128,12 @@
 
 [![Star History Chart](https://api.star-history.com/svg?repos=chinese-poetry/chinese-poetry&type=Date)](https://star-history.com/#chinese-poetry/chinese-poetry&Date)
 
+## Web 界面
+
+- 访问本仓库内的静态搜索页面：`web/index.html`
+- 本页面支持按类别/朝代、作者、诗句进行搜索
+- 本地运行方式：在仓库根目录执行 `python3 -m http.server 8000`，再打开 `http://localhost:8000/web/index.html`
+
 ## License
 
 [MIT](https://github.com/chinese-poetry/chinese-poetry/blob/master/LICENSE) 许可证。
