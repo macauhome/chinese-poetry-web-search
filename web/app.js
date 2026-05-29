@@ -1,5 +1,5 @@
 const manifestUrl = './poetry-manifest.json';
-const MAX_RESULTS = 120;
+const PAGE_SIZE = 120;
 const BATCH_SIZE = 5;
 
 const datasetSelect = document.getElementById('datasetSelect');
@@ -13,11 +13,23 @@ const resultCount = document.getElementById('resultCount');
 const statusPanel = document.querySelector('.status-panel');
 const statusText = document.getElementById('statusText');
 const progressBar = document.getElementById('progressBar');
+const paginationControls = document.getElementById('paginationControls');
+const prevPageButton = document.getElementById('prevPage');
+const nextPageButton = document.getElementById('nextPage');
+const pageInfo = document.getElementById('pageInfo');
+
+prevPageButton.addEventListener('click', () => gotoPage(appState.currentPage - 1));
+nextPageButton.addEventListener('click', () => gotoPage(appState.currentPage + 1));
 
 const appState = {
   manifest: null,
   fileCache: {},
   isSearching: false,
+  currentResults: [],
+  currentPage: 1,
+  pageSize: PAGE_SIZE,
+  totalPages: 0,
+  currentScopeLabel: '',
 };
 
 window.addEventListener('load', init);
@@ -128,22 +140,32 @@ async function onSearch() {
   resultCount.textContent = '搜索中…';
   resultsEl.innerHTML = '';
   appState.isSearching = true;
-  let count = 0;
+  appState.currentResults = [];
+  appState.currentPage = 1;
+  appState.totalPages = 0;
+
   let checked = 0;
   const results = [];
 
-  setStatus(`正在搜索 ${files.length} 個文件，請稍候…`, 0);
-  for (let index = 0; index < files.length && results.length < MAX_RESULTS; index += BATCH_SIZE) {
-    const batch = files.slice(index, index + BATCH_SIZE);
-    const promises = batch.map(file => searchFile(file, authorQuery, textQuery, results, MAX_RESULTS));
-    await Promise.all(promises);
-    checked += batch.length;
-    const ratio = checked / files.length;
-    setStatus(`已檢查 ${checked}/${files.length} 個文件，找到 ${results.length} 條匹配結果`, ratio);
-  }
+  try {
+    setStatus(`正在搜索 ${files.length} 個文件，請稍候…`, 0);
+    for (let index = 0; index < files.length; index += BATCH_SIZE) {
+      const batch = files.slice(index, index + BATCH_SIZE);
+      const promises = batch.map(file => searchFile(file, authorQuery, textQuery, results));
+      await Promise.all(promises);
+      checked += batch.length;
+      const ratio = checked / files.length;
+      setStatus(`已檢查 ${checked}/${files.length} 個文件，找到 ${results.length} 條匹配結果`, ratio);
+    }
 
-  appState.isSearching = false;
-  renderSearchResults(results, queryLabel.join(' / '));
+    renderSearchResults(results, queryLabel.join(' / '));
+  } catch (error) {
+    console.error(error);
+    appendErrorCard(`搜索過程中出現錯誤：${error.message}`);
+    setStatus('搜索失敗，請稍後重試。', 0);
+  } finally {
+    appState.isSearching = false;
+  }
 }
 
 function searchByAuthor(authorName) {
@@ -156,8 +178,7 @@ function searchByAuthor(authorName) {
   onSearch();
 }
 
-async function searchFile(fileInfo, authorQuery, textQuery, results, maxResults) {
-  if (results.length >= maxResults) return;
+async function searchFile(fileInfo, authorQuery, textQuery, results) {
   const cacheKey = fileInfo.path;
   let entries = appState.fileCache[cacheKey];
   if (!entries) {
@@ -179,7 +200,6 @@ async function searchFile(fileInfo, authorQuery, textQuery, results, maxResults)
 
   const queries = { authorQuery, textQuery };
   for (const item of entries) {
-    if (results.length >= maxResults) break;
     if (!item || typeof item !== 'object') continue;
     const author = (item.author || item.author_name || '').toString();
     const title = (item.title || item.name || '').toString();
@@ -216,18 +236,36 @@ function appendErrorCard(message) {
 }
 
 function renderSearchResults(results, scopeLabel) {
-  if (results.length === 0) {
+  appState.currentResults = results;
+  appState.currentPage = 1;
+  appState.totalPages = Math.max(1, Math.ceil(results.length / appState.pageSize));
+  appState.currentScopeLabel = scopeLabel;
+  renderCurrentPage();
+}
+
+function gotoPage(page) {
+  if (page < 1 || page > appState.totalPages || appState.currentResults.length === 0) return;
+  appState.currentPage = page;
+  renderCurrentPage();
+}
+
+function renderCurrentPage() {
+  if (appState.currentResults.length === 0) {
     resultsEl.innerHTML = '<div class="result-card">沒有找到匹配結果。請嘗試更改關鍵詞或選擇更少的類別。</div>';
     resultCount.textContent = '0 條結果';
-    setStatus(`已完成搜索：${scopeLabel}。`, 1);
+    setStatus(`已完成搜索：${appState.currentScopeLabel}。`, 1);
+    paginationControls.hidden = true;
     return;
   }
 
-  resultCount.textContent = `${results.length} 條結果（最多顯示 ${MAX_RESULTS} 條）`;
-  setStatus('搜索完成。', 1);
+  const start = (appState.currentPage - 1) * appState.pageSize;
+  const pageItems = appState.currentResults.slice(start, start + appState.pageSize);
+
+  resultCount.textContent = `${appState.currentResults.length} 條結果，第 ${appState.currentPage}/${appState.totalPages} 頁`;
+  setStatus(`已完成搜索：${appState.currentScopeLabel}。`, 1);
 
   resultsEl.innerHTML = '';
-  results.slice(0, MAX_RESULTS).forEach(item => {
+  pageItems.forEach(item => {
     const card = document.createElement('div');
     card.className = 'result-card';
 
@@ -259,4 +297,18 @@ function renderSearchResults(results, scopeLabel) {
 
     resultsEl.append(card);
   });
+
+  updatePaginationControls();
+}
+
+function updatePaginationControls() {
+  if (appState.totalPages <= 1) {
+    paginationControls.hidden = true;
+    return;
+  }
+
+  paginationControls.hidden = false;
+  prevPageButton.disabled = appState.currentPage === 1;
+  nextPageButton.disabled = appState.currentPage === appState.totalPages;
+  pageInfo.textContent = `第 ${appState.currentPage} / ${appState.totalPages} 頁`;
 }

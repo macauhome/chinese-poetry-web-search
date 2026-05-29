@@ -11,11 +11,12 @@
     <header class="hero">
       <div>
         <p class="kicker">古典詩詞數據庫</p>
-        <h1>Chinese Poetry Search</h1>
+        <h1>中華詩詞搜索</h1>
         <p class="subtitle">按朝代、作者或詩句快速查詢本倉庫中的古典詩詞與文集。</p>
       </div>
       <div class="hero-note">
         <strong>源數據</strong>：<span>chinese-poetry</span> JSON 倉庫
+        <span>https://github.com/chinese-poetry/chinese-poetry</span>
       </div>
     </header>
 
@@ -52,6 +53,11 @@
       <div class="results-header">
         <h2>搜索結果</h2>
         <span id="resultCount">尚未搜索</span>
+      </div>
+      <div class="pagination" id="paginationControls" hidden>
+        <button id="prevPage" class="secondary" type="button">上一頁</button>
+        <span id="pageInfo">第 1 / 1 頁</span>
+        <button id="nextPage" class="secondary" type="button">下一頁</button>
       </div>
       <div id="results"></div>
     </section>

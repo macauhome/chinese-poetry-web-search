@@ -222,6 +222,23 @@ button.secondary {
   color: #8b6f61;
 }
 
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 0 18px;
+}
+
+.pagination button {
+  min-width: 96px;
+}
+
+.pagination span {
+  color: #8b6f61;
+  font-weight: 700;
+}
+
 .result-card {
   display: grid;
   gap: 12px;
