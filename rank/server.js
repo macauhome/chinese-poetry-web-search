@@ -74,7 +74,7 @@ let checkGoogle = async () => {
         }).on('error', resolve);
     });
 };
-//使用chrome模拟访问
+//使用chrome模擬訪問
 let headless = {
     before() {
         return new Promise(async resolve => {
@@ -130,7 +130,7 @@ let headless = {
                 text = await page.$eval('body', e => e.innerHTML);
                 let nums = 0;
                 text = String(text).replace(/<(script|style)[^>]*>[\s\S]*?<\/\1>/g, '');
-                text.replace(/百度为您找到相关结果约([\d,]+)个/, (_, m) => {
+                text.replace(/百度爲您找到相關結果約([\d,]+)個/, (_, m) => {
                     nums = parseInt(m.replace(/,/g, ''), 10);
                 });
                 if (nums === 0) {
@@ -180,27 +180,27 @@ let rank = {
             let maps = {
                 baidu: {
                     url: `https://www.baidu.com/`,
-                    reg: /百度为您找到相关结果约([\d,]+)个/,
+                    reg: /百度爲您找到相關結果約([\d,]+)個/,
                     page: 0,
                 },
                 so360: {
                     url: `https://www.so.com/s?q=${kd}`,
-                    reg: /找到相关结果约([\d,]+)个/,
+                    reg: /找到相關結果約([\d,]+)個/,
                     page: 1,
                 },
                 google: {
                     url: `https://www.google.com/search?q=${kd}`,
-                    reg: /(?:找到约|About)?\s*([\d,]+)\s*(?:条结果|results)/,
+                    reg: /(?:找到約|About)?\s*([\d,]+)\s*(?:條結果|results)/,
                     page: 2
                 },
                 bing: {
                     url: `https://cn.bing.com/search?q=${kd}&FORM=BESBTB&ensearch=0`,
-                    reg: />([\d,]+)\s*(?:results|条结果)<\/span>/i,
+                    reg: />([\d,]+)\s*(?:results|條結果)<\/span>/i,
                     page: 3
                 },
                 bing_en: {
                     url: `https://cn.bing.com/search?q=${kd}&FORM=BESBTB&ensearch=1`,
-                    reg: />([\d,]+)\s*(?:results|条结果)<\/span>/i,
+                    reg: />([\d,]+)\s*(?:results|條結果)<\/span>/i,
                     page: 4
                 }
             };
@@ -371,7 +371,7 @@ let ciTask = async () => {
                         ZerosFile[type][aim] = Zeros[type];
                         rank.write('./s.zero.cache', JSON.stringify(ZerosFile, null, 4));
                     }
-                    caches[type] = Object.create(null);//文件写入后，清理缓存
+                    caches[type] = Object.create(null);//文件寫入後，清理緩存
                     setTimeout(() => {
                         work(type, index + 1, list);
                     }, 2 * 1000);
@@ -508,7 +508,7 @@ let poetTask = async () => {
                     // if (zeros.length) {
                     //     rank.write('./poet/' + zeroAim, JSON.stringify(zeros, null, 4));
                     // }
-                    caches[type] = Object.create(null);//文件写入后，清理缓存
+                    caches[type] = Object.create(null);//文件寫入後，清理緩存
                     setTimeout(() => {
                         work(type, index + 1, list);
                     }, 2 * 1000);
@@ -659,7 +659,7 @@ let runLessNumberTask = async (cat = 'poet') => {
                 Zeros[type] = 0;
                 let ranks = await singleWork(one, type, start);
                 rank.write(one, JSON.stringify(ranks, null, 4));
-                //caches[type] = Object.create(null);//文件写入后，清理缓存
+                //caches[type] = Object.create(null);//文件寫入後，清理緩存
                 taskIndex[type][0]++;
                 taskIndex[type][1] = 0;
                 rank.write('./s.' + type + '.index.cache', [taskIndex[type][0], 0]);

@@ -10,37 +10,37 @@
   <div class="page-shell">
     <header class="hero">
       <div>
-        <p class="kicker">古典诗词数据库</p>
+        <p class="kicker">古典詩詞數據庫</p>
         <h1>Chinese Poetry Search</h1>
-        <p class="subtitle">按朝代、作者或诗句快速查询本仓库中的古典诗词与文集。</p>
+        <p class="subtitle">按朝代、作者或詩句快速查詢本倉庫中的古典詩詞與文集。</p>
       </div>
       <div class="hero-note">
-        <strong>源数据</strong>：<span>chinese-poetry</span> JSON 仓库
+        <strong>源數據</strong>：<span>chinese-poetry</span> JSON 倉庫
       </div>
     </header>
 
     <section class="search-panel">
       <div class="field-group">
-        <label for="datasetSelect">选择类别</label>
+        <label for="datasetSelect">選擇類別</label>
         <select id="datasetSelect"></select>
       </div>
       <div class="field-group">
-        <label for="dynastySelect">按朝代筛选</label>
+        <label for="dynastySelect">按朝代篩選</label>
         <select id="dynastySelect"></select>
       </div>
       <div class="field-group">
-        <label for="authorInput">作者 / 诗人</label>
-        <input id="authorInput" type="text" placeholder="输入作者姓名，支持模糊搜索" />
+        <label for="authorInput">作者 / 詩人</label>
+        <input id="authorInput" type="text" placeholder="輸入作者姓名，支持模糊搜索" />
       </div>
       <div class="field-group flex-grow">
-        <label for="textInput">诗句 / 标题 / 内容</label>
-        <input id="textInput" type="text" placeholder="输入诗句、词句或标题关键词" />
+        <label for="textInput">詩句 / 標題 / 內容</label>
+        <input id="textInput" type="text" placeholder="輸入詩句、詞句或標題關鍵詞" />
       </div>
       <div class="button-row">
-        <button id="searchButton" class="primary">开始搜索</button>
+        <button id="searchButton" class="primary">開始搜索</button>
         <button id="resetButton" class="secondary">重置</button>
       </div>
-      <p class="hint">搜索过程中将按所选类别逐步加载对应 JSON 文件，首次查询可能需要几秒钟。</p>
+      <p class="hint">搜索過程中將按所選類別逐步加載對應 JSON 文件，首次查詢可能需要幾秒鐘。</p>
     </section>
 
     <section class="status-panel" hidden>
@@ -50,15 +50,15 @@
 
     <section class="results-panel">
       <div class="results-header">
-        <h2>搜索结果</h2>
+        <h2>搜索結果</h2>
         <span id="resultCount">尚未搜索</span>
       </div>
       <div id="results"></div>
     </section>
 
     <footer class="page-footer">
-      <p>页面仅使用浏览器和本仓库的 JSON 数据构建，支持本地静态托管。</p>
-      <p>在仓库根目录运行：<code>python3 -m http.server 8000</code>，然后打开 <code>/web/index.html</code></p>
+      <p>頁面僅使用瀏覽器和本倉庫的 JSON 數據構建，支持本地靜態託管。</p>
+      <p>在倉庫根目錄運行：<code>python3 -m http.server 8000</code>，然後打開 <code>/web/index.html</code></p>
     </footer>
   </div>
 

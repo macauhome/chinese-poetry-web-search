@@ -2,16 +2,16 @@
     "cp_path": "./", 
     "datasets": {
         "wudai-huajianji": {
-            "name": "五代-花间集",
+            "name": "五代-花間集",
             "id": 0,
-            "path": "五代诗词/huajianji/", 
+            "path": "五代詩詞/huajianji/", 
             "excludes": ["README.md"],
             "tag": "paragraphs"
         },
         "wudai-nantang": {
             "name": "五代-南唐",
             "id": 1, 
-            "path": "五代诗词/nantang/poetrys.json",
+            "path": "五代詩詞/nantang/poetrys.json",
             "tag": "paragraphs"
         },
         "yuanqu": {
@@ -21,30 +21,30 @@
             "tag": "paragraphs"
         },
         "tangsong": {
-            "name": "全唐诗全宋诗",
+            "name": "全唐詩全宋詩",
             "id": 3,
-            "path": "全唐诗/",
-            "excludes": ["README.md", "表面结构字.json", "error", "authors.song.json", "authors.tang.json"],
+            "path": "全唐詩/",
+            "excludes": ["README.md", "表面結構字.json", "error", "authors.song.json", "authors.tang.json"],
             "tag": "paragraphs"
         },
         "mengzi": {
-            "name": "四书五经-孟子", 
+            "name": "四書五經-孟子", 
             "id": 4,
-            "path": "四书五经/mengzi.json",
+            "path": "四書五經/mengzi.json",
             "tag": "paragraphs",
-            "comments": "四书五经的其他文件不符合两层结构, 以后再想办法处理吧."
+            "comments": "四書五經的其他文件不符合兩層結構, 以後再想辦法處理吧."
         },
         "songci": {
-            "name": "宋词",
+            "name": "宋詞",
             "id": 5,
-            "path": "宋词/",
+            "path": "宋詞/",
             "excludes": ["authors.song.json", "ci.db", "main.py", "README.md", "UpdateCi.py"],
             "tag": "paragraphs"
         },
         "youmengying": {
-            "name": "幽梦影-张潮文集",
+            "name": "幽夢影-張潮文集",
             "id": 6,
-            "path": "幽梦影/youmengying.json",
+            "path": "幽夢影/youmengying.json",
             "tag": "content"
         },
         "yudingquantangshi": {
@@ -54,40 +54,40 @@
             "tag": "paragraphs"
         },
         "caocao": {
-            "name": "曹操诗集",
+            "name": "曹操詩集",
             "id": 8,
-            "path": "曹操诗集/caocao.json",
+            "path": "曹操詩集/caocao.json",
             "tag": "paragraphs"
         },
         "chuci": {
-            "name": "楚辞",
+            "name": "楚辭",
             "id": 9,
-            "path": "楚辞/chuci.json",
+            "path": "楚辭/chuci.json",
             "tag": "content"
         },
         "shuimotangshi": {
-            "name": "水墨唐诗",
+            "name": "水墨唐詩",
             "id": 10,
-            "path": "水墨唐诗/shuimotangshi.json",
+            "path": "水墨唐詩/shuimotangshi.json",
             "tag": "paragraphs"
         },
         "nalanxingde": {
-            "name": "纳兰性德",
+            "name": "納蘭性德",
             "id": 11,
-            "path": "纳兰性德/纳兰性德诗集.json",
+            "path": "納蘭性德/納蘭性德詩集.json",
             "tag": "para",
-            "comments": "蒙学文件夹下的非常规格式文件没有包括在这个json中"
+            "comments": "蒙學文件夾下的非常規格式文件沒有包括在這個json中"
         },
         "lunyu": {
-            "name": "论语",
+            "name": "論語",
             "id": 12,
-            "path": "论语/lunyu.json",
+            "path": "論語/lunyu.json",
             "tag": "paragraphs"
         },
         "shijing": {
-            "name": "诗经",
+            "name": "詩經",
             "id": 13,
-            "path": "诗经/shijing.json",
+            "path": "詩經/shijing.json",
             "tag": "content"
         }
     }

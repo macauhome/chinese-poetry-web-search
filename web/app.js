@@ -24,36 +24,36 @@ window.addEventListener('load', init);
 
 async function init() {
   if (!window.location.protocol.startsWith('http')) {
-    resultsEl.innerHTML = '<div class="result-card">请通过 HTTP 服务器访问此页面，例如：<code>python3 -m http.server 8000</code>，然后打开 <code>http://localhost:8000/web/index.html</code>。</div>';
-    resultCount.textContent = '页面未通过 HTTP 访问';
-    setStatus('当前页面为本地文件打开，JSON 加载受限。', 0);
+    resultsEl.innerHTML = '<div class="result-card">請通過 HTTP 服務器訪問此頁面，例如：<code>python3 -m http.server 8000</code>，然後打開 <code>http://localhost:8000/web/index.html</code>。</div>';
+    resultCount.textContent = '頁面未通過 HTTP 訪問';
+    setStatus('當前頁面爲本地文件打開，JSON 加載受限。', 0);
     return;
   }
 
   manifestSelectLoading();
   try {
     const manifest = await fetch(manifestUrl).then(r => {
-      if (!r.ok) throw new Error(`manifest 加载失败：${r.status}`);
+      if (!r.ok) throw new Error(`manifest 加載失敗：${r.status}`);
       return r.json();
     });
     appState.manifest = manifest;
     renderSelects(manifest);
-    setStatus(`已加载 ${manifest.datasets.length} 类别，${manifest.dynasties.length} 个朝代。输入关键词开始搜索。`, 0);
+    setStatus(`已加載 ${manifest.datasets.length} 類別，${manifest.dynasties.length} 個朝代。輸入關鍵詞開始搜索。`, 0);
   } catch (error) {
     console.error(error);
-    setStatus('无法加载诗词目录。请检查 web/poetry-manifest.json 是否存在。', 0);
+    setStatus('無法加載詩詞目錄。請檢查 web/poetry-manifest.json 是否存在。', 0);
   }
 }
 
 function manifestSelectLoading() {
-  datasetSelect.innerHTML = '<option>加载中…</option>';
-  dynastySelect.innerHTML = '<option>加载中…</option>';
+  datasetSelect.innerHTML = '<option>加載中…</option>';
+  dynastySelect.innerHTML = '<option>加載中…</option>';
 }
 
 function renderSelects(manifest) {
   const datasets = manifest.datasets;
   datasetSelect.innerHTML = '';
-  datasetSelect.append(createOption('', '全部类别'));
+  datasetSelect.append(createOption('', '全部類別'));
   datasets.forEach(ds => {
     datasetSelect.append(createOption(ds.id, `${ds.name} (${ds.dynasty})`));
   });
@@ -88,7 +88,7 @@ function onReset() {
   textInput.value = '';
   resultsEl.innerHTML = '';
   resultCount.textContent = '尚未搜索';
-  setStatus('搜索条件已重置。', 0);
+  setStatus('搜索條件已重置。', 0);
 }
 
 function setStatus(message, ratio) {
@@ -118,13 +118,13 @@ async function onSearch() {
 
   const files = selectedDatasets.flatMap(ds => ds.files.map(path => ({ path, tag: ds.tag, dataset: ds.name, dynasty: ds.dynasty })));
   if (files.length === 0) {
-    resultsEl.innerHTML = '<div class="result-card">未找到可搜索的文件，请检查数据完整性。</div>';
-    resultCount.textContent = '0 条结果';
+    resultsEl.innerHTML = '<div class="result-card">未找到可搜索的文件，請檢查數據完整性。</div>';
+    resultCount.textContent = '0 條結果';
     setStatus('未找到可搜索的文件。', 0);
     return;
   }
 
-  const queryLabel = [datasetId || '全部类别', dynasty || '全部朝代'];
+  const queryLabel = [datasetId || '全部類別', dynasty || '全部朝代'];
   resultCount.textContent = '搜索中…';
   resultsEl.innerHTML = '';
   appState.isSearching = true;
@@ -132,14 +132,14 @@ async function onSearch() {
   let checked = 0;
   const results = [];
 
-  setStatus(`正在搜索 ${files.length} 个文件，请稍候…`, 0);
+  setStatus(`正在搜索 ${files.length} 個文件，請稍候…`, 0);
   for (let index = 0; index < files.length && results.length < MAX_RESULTS; index += BATCH_SIZE) {
     const batch = files.slice(index, index + BATCH_SIZE);
     const promises = batch.map(file => searchFile(file, authorQuery, textQuery, results, MAX_RESULTS));
     await Promise.all(promises);
     checked += batch.length;
     const ratio = checked / files.length;
-    setStatus(`已检查 ${checked}/${files.length} 个文件，找到 ${results.length} 条匹配结果`, ratio);
+    setStatus(`已檢查 ${checked}/${files.length} 個文件，找到 ${results.length} 條匹配結果`, ratio);
   }
 
   appState.isSearching = false;
@@ -152,7 +152,7 @@ function searchByAuthor(authorName) {
   dynastySelect.value = '';
   authorInput.value = authorName;
   textInput.value = '';
-  setStatus(`正在显示作者「${authorName}」的全部作品…`, 0);
+  setStatus(`正在顯示作者「${authorName}」的全部作品…`, 0);
   onSearch();
 }
 
@@ -165,14 +165,14 @@ async function searchFile(fileInfo, authorQuery, textQuery, results, maxResults)
       const fileUrl = makeUrlFromPath(fileInfo.path);
       const response = await fetch(fileUrl);
       if (!response.ok) {
-        throw new Error(`状态 ${response.status}`);
+        throw new Error(`狀態 ${response.status}`);
       }
       const data = await response.json();
       entries = Array.isArray(data) ? data : Object.values(data);
       appState.fileCache[cacheKey] = entries;
     } catch (error) {
       console.warn(error);
-      appendErrorCard(`无法加载 ${fileInfo.path}：${error.message}`);
+      appendErrorCard(`無法加載 ${fileInfo.path}：${error.message}`);
       return;
     }
   }
@@ -211,19 +211,19 @@ function appendErrorCard(message) {
   card.className = 'result-card';
   card.style.background = '#fff1f0';
   card.style.borderColor = 'rgba(244, 63, 94, .16)';
-  card.innerHTML = `<strong>错误：</strong> ${message}`;
+  card.innerHTML = `<strong>錯誤：</strong> ${message}`;
   resultsEl.append(card);
 }
 
 function renderSearchResults(results, scopeLabel) {
   if (results.length === 0) {
-    resultsEl.innerHTML = '<div class="result-card">没有找到匹配结果。请尝试更改关键词或选择更少的类别。</div>';
-    resultCount.textContent = '0 条结果';
+    resultsEl.innerHTML = '<div class="result-card">沒有找到匹配結果。請嘗試更改關鍵詞或選擇更少的類別。</div>';
+    resultCount.textContent = '0 條結果';
     setStatus(`已完成搜索：${scopeLabel}。`, 1);
     return;
   }
 
-  resultCount.textContent = `${results.length} 条结果（最多显示 ${MAX_RESULTS} 条）`;
+  resultCount.textContent = `${results.length} 條結果（最多顯示 ${MAX_RESULTS} 條）`;
   setStatus('搜索完成。', 1);
 
   resultsEl.innerHTML = '';
@@ -232,7 +232,7 @@ function renderSearchResults(results, scopeLabel) {
     card.className = 'result-card';
 
     const title = document.createElement('h3');
-    title.textContent = item.title || '无标题';
+    title.textContent = item.title || '無標題';
     card.append(title);
 
     const meta = document.createElement('div');
@@ -246,7 +246,7 @@ function renderSearchResults(results, scopeLabel) {
     authorLink.addEventListener('click', () => searchByAuthor(authorName));
 
     const infoText = document.createElement('span');
-    infoText.textContent = `· ${item.dynasty || '未分类'} · ${item.dataset}`;
+    infoText.textContent = `· ${item.dynasty || '未分類'} · ${item.dataset}`;
 
     meta.append(authorLink, infoText);
     card.append(meta);
