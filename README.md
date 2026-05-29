@@ -4,7 +4,7 @@
   </a>
 </p>
 
-<h2 align="center">chinese-poetry: 最全中文詩歌古典文集數據庫</h2>
+<h2 align="center">chinese-poetry: 最全中文诗歌古典文集数据库</h2>
 
 <p align="center">
   <a href="https://travis-ci.com/chinese-poetry/chinese-poetry" rel="nofollow">
